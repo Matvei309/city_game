@@ -4,8 +4,7 @@ import numpy as np
 import pandas as pd
 import pygame as pg
 from text import print_text_pygame
-import pygame
-
+import os
 development            = [100, 80, 60, 20]
 W, H 	= 1900, 1080
 
@@ -69,63 +68,34 @@ for country, contry_data in data.items():
 table = pd.DataFrame(list_result, columns=columns)
 
 
+pic_country = [
+    pg.image.load('assets/Russia.png'),
+    pg.image.load('assets/China.png'),
+    pg.image.load('assets/Japan.png'),
+    pg.image.load('assets/USA.png'), 
+    pg.image.load('assets/Ukrain.png')]
 
+# for i in  pic_coutry: 
+#     hfbdj
+#     pic_country = pg.transform.scale(pic_country[0], (50, 50))
 for column in ['money', 'shoot', 'development']:
     table.loc[:, column] = table[column].astype(int)
 
 
 def set_value(country, city, column, value, df=table):
-    df.loc[(df.country == country) & (df.city == city), column] = value
+    df.loc[(df.country == city) & (df.city == city), column] = value
     return df
 
 def change_value(df, country, city, column, value):
     df.loc[(df.country == country) & (df.city == city), column] += value
     return df
-BNT_IN 			= (0, 0, 0)
-BNT_OUT 		= (255, 0, 0)
-pygame.init()
+print(table.loc[0, 0].money - 100)
 
-sc          = pygame.display.set_mode((W, H), pygame.FULLSCREEN)
-def button(x, y, w, h, txt, txt_size, txt_color, x_sh, y_sh, func, photo=False):
-    '''здесь создается нажатие на кнопки и их взаимодеиствия '''
-    mouse 		= pygame.mouse.get_pos()
-    is_clicked  = pygame.mouse.get_pressed() 
-    if x - w // 2 < mouse[0] < x + w // 2 and y - w // 2 < mouse[1] < y + h // 2:
-        if photo:
-            x_b, y_b = x - photo[1][1] // 2, y - photo[1][2] // 2
-            sc.blit(photo[1][0], (x_b, y_b))
-        else:
-            pygame.draw.rect(sc, BNT_IN, (x - w // 2, y - h //2, w, h))
-            print_text_pygame(txt, txt_size, sc, (x, y), BNT_OUT)
-        if is_clicked[0]:
-            pygame.time.delay(300)
-            if func is None:
-                return True
-            else:
-                return func()
-    else:
-        if photo:
-            sc.blit(photo[0][0], (x - photo[0][1] // 2, y - photo[0][2] // 2))
-        else:
-            pygame.draw.rect(sc, BNT_OUT, (x - w // 2, y - h // 2, w, h))
-            print_text_pygame(txt, txt_size, sc, (x, y), BNT_IN)
-
-
-
-
-if button(W - W // 10, H // 8 * 7 - 1000, 200, 100, '', 5, (0, 0, 0), 30, 30, None, None):
-    table = change_value(table, 'Ru', 'Moscow', 'money', +100)
-
-
-
-    
-def draw_dataframe(sc, data=table, x= 0 + 270, y=0 + 50):
-    pic_country = pg.image.load('Russia.png')
-    pic_country = pg.transform.scale(pic_country, (50, 50))
+def draw_dataframe(sc, data=table, x=W // 8, y=100):
     data_str = data.iloc[:, 1:].to_string()
     step = 40
     y_index = y
-    
+    country_index = 0 
     for i, element in enumerate(data_str.split('\n')):
         amount_space = element.index(' ')
         output_string = ' ' * amount_space + element[amount_space:]
@@ -134,8 +104,11 @@ def draw_dataframe(sc, data=table, x= 0 + 270, y=0 + 50):
         y_index += step
         
         if (y_index - y) % (step * 4) == 0:
-            sc.blit(pic_country, (x - 160, y_index - 2 * step))
-            #country_index += 1
+            sc.blit(pic_country[country_index], (x - 250, y_index - 2 * step))
+            if country_index == 4:
+                country_index = 0 
+            else:
+                country_index += 1
 
 
 # end_string = '\n' + '#' * 70 + '\n'

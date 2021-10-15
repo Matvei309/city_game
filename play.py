@@ -63,32 +63,6 @@ def button(x, y, w, h, txt, txt_size, txt_color, x_sh, y_sh, func, photo=False):
             pygame.draw.rect(sc, BNT_OUT, (x - w // 2, y - h // 2, w, h))
             print_text_pygame(txt, txt_size, sc, (x, y), BNT_IN)
 def game():
-    bomb    = pygame.image.load('/Users/matveybazhanov/Desktop/play_111/bomb.png')
-    bombs   = [[pygame.transform.scale(bomb, (100, 100)), 100, 100]]
-    bombs.append([pygame.transform.scale(bomb, (150, 150)), 150, 150])
-    
-    for_bomb    = pygame.image.load('/Users/matveybazhanov/Desktop/play_111/for_bomb.png')
-    for_bombs   = [[pygame.transform.scale(for_bomb, (100, 100)), 100, 100]]
-    for_bombs.append([pygame.transform.scale(for_bomb, (150, 150)), 150, 150])
-    
-    fire    = pygame.image.load('/Users/matveybazhanov/Desktop/play_111/fire.png')
-    fires   = [[pygame.transform.scale(fire, (100, 100)), 100, 100]]
-    fires.append([pygame.transform.scale(fire, (150, 150)), 150, 150])
-    
-    info    = pygame.image.load('/Users/matveybazhanov/Desktop/play_111/info.png')
-    infos   = [[pygame.transform.scale(info, (100, 100)), 100, 100]]
-    infos.append([pygame.transform.scale(info, (150, 150)), 150, 150])
-    
-    forest    = pygame.image.load('/Users/matveybazhanov/Desktop/play_111/forest.png')
-    forests   = [[pygame.transform.scale(forest, (100, 100)), 100, 100]]
-    forests.append([pygame.transform.scale(forest, (150, 150)), 150, 150])
-    
-    forest    = pygame.image.load('/Users/matveybazhanov/Desktop/play_111/forest.png')
-    forests   = [[pygame.transform.scale(forest, (100, 100)), 100, 100]]
-    forests.append([pygame.transform.scale(forest, (150, 150)), 150, 150])
-    
-    money_1    = pygame.image.load('/Users/matveybazhanov/Desktop/play_111/money.png')
-    money_1    = pygame.transform.scale(money_1, (100, 120))
 
     development_dddd            = random.choices(range(100, 101), k=6)
     development_ddd             = random.choices(range(80, 81), k=6)

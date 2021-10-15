@@ -45,27 +45,27 @@ def button(x, y, w, h, txt, txt_size, txt_color, x_sh, y_sh, func, photo=False):
         
         
 def move_for_game():           
-    bomb    = pygame.image.load('/Users/matveybazhanov/Desktop/play_111/bomb.png')
+    bomb    = pygame.image.load('assets/bomb.png')
     bombs   = [[pygame.transform.scale(bomb, (100, 100)), 100, 100]]
     bombs.append([pygame.transform.scale(bomb, (150, 150)), 150, 150])
     
-    for_bomb    = pygame.image.load('/Users/matveybazhanov/Desktop/play_111/for_bomb.png')
+    for_bomb    = pygame.image.load('assets/for_bomb.png')
     for_bombs   = [[pygame.transform.scale(for_bomb, (100, 100)), 100, 100]]
     for_bombs.append([pygame.transform.scale(for_bomb, (150, 150)), 150, 150])
     
-    fire    = pygame.image.load('/Users/matveybazhanov/Desktop/play_111/fire.png')
+    fire    = pygame.image.load('assets/fire.png')
     fires   = [[pygame.transform.scale(fire, (100, 100)), 100, 100]]
     fires.append([pygame.transform.scale(fire, (150, 150)), 150, 150])
     
-    info    = pygame.image.load('/Users/matveybazhanov/Desktop/play_111/info.png')
+    info    = pygame.image.load('assets/info.png')
     infos   = [[pygame.transform.scale(info, (100, 100)), 100, 100]]
     infos.append([pygame.transform.scale(info, (150, 150)), 150, 150])
     
-    forest    = pygame.image.load('/Users/matveybazhanov/Desktop/play_111/forest.png')
+    forest    = pygame.image.load('assets/forest.png')
     forests   = [[pygame.transform.scale(forest, (100, 100)), 100, 100]]
     forests.append([pygame.transform.scale(forest, (150, 150)), 150, 150])
     
-    forest    = pygame.image.load('/Users/matveybazhanov/Desktop/play_111/forest.png')
+    forest    = pygame.image.load('assets/forest.png')
     forests   = [[pygame.transform.scale(forest, (100, 100)), 100, 100]]
     forests.append([pygame.transform.scale(forest, (150, 150)), 150, 150])
         
@@ -96,8 +96,8 @@ def move_for_game():
                 # eco -= 3
                 # test.table.loc['Russia'].bomb[index] = True
     
-    # if button(W - W // 10, H // 8 * 7 - 1000, 200, 100, '', 5, (0, 0, 0), 30, 30, None, for_bombs):
-    #     test.change_value(test.table, 'Ru', 'Moscow', 'money', +100)
+    if button(W - W // 10, H // 8 * 7 - 200, 200, 100, '', 5, (0, 0, 0), 30, 30, None, for_bombs):
+        test.table = test.change_value(test.table, 'Ru', 'Moscow', 'money', 100)
         
         
         
