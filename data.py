@@ -1,12 +1,22 @@
-import random
+import os
 from typing import Counter
 import numpy as np
 import pandas as pd
 import pygame as pg
 from text import print_text_pygame
-import os
+
+
 development            = [100, 80, 60, 20]
 W, H 	= 1900, 1080
+
+
+country_names = [item for item in list(os.walk('assets/'))[0][-1] if item[0].isupper()]
+action_names = [item for item in list(os.walk('assets/'))[0][-1] if not item[0].isupper()]
+
+country_pics = [pg.transform.scale(pg.image.load('assets/' + item), (50, 50))\
+                for item in country_names]
+action_pics = [pg.transform.scale(pg.image.load('assets/' + item), (50, 50))\
+                for item in action_names]
 
 columns = 'country', 'city', 'money', 'shoot', 'shield', 'development'
 data = {
@@ -68,34 +78,25 @@ for country, contry_data in data.items():
 table = pd.DataFrame(list_result, columns=columns)
 
 
-pic_country = [
-    pg.image.load('assets/Russia.png'),
-    pg.image.load('assets/China.png'),
-    pg.image.load('assets/Japan.png'),
-    pg.image.load('assets/USA.png'), 
-    pg.image.load('assets/Ukrain.png')]
-
-# for i in  pic_coutry: 
-#     hfbdj
-#     pic_country = pg.transform.scale(pic_country[0], (50, 50))
 for column in ['money', 'shoot', 'development']:
     table.loc[:, column] = table[column].astype(int)
 
 
 def set_value(country, city, column, value, df=table):
-    df.loc[(df.country == city) & (df.city == city), column] = value
+    df.loc[(df.country == country) & (df.city == city), column] = value
     return df
 
-def change_value(df, country, city, column, value):
-    df.loc[(df.country == country) & (df.city == city), column] += value
+def change_value(df, city, column, value):
+    df.loc[(df.city == city), column] += value
     return df
-# print(table.loc[0, 0].money - 100)
 
-def draw_dataframe(sc, data=table, x=W // 8, y=100):
+  
+def draw_dataframe(sc, data=table, x= 0 + 350, y=0 + 50):
     data_str = data.iloc[:, 1:].to_string()
     step = 40
     y_index = y
-    country_index = 0 
+    pic_index = 0
+    
     for i, element in enumerate(data_str.split('\n')):
         amount_space = element.index(' ')
         output_string = ' ' * amount_space + element[amount_space:]
@@ -104,11 +105,12 @@ def draw_dataframe(sc, data=table, x=W // 8, y=100):
         y_index += step
         
         if (y_index - y) % (step * 4) == 0:
-            sc.blit(pic_country[country_index], (x - 250, y_index - 2 * step))
-            if country_index == 4:
-                country_index = 0 
-            else:
-                country_index += 1
+            sc.blit(country_pics[pic_index], (x - 300, y_index - 2 * step))
+            pic_index += 1
+            # y_index += 0
+            
+            if pic_index == len(country_pics):
+                pic_index = 0
 
 
 # end_string = '\n' + '#' * 70 + '\n'
@@ -125,27 +127,26 @@ def draw_dataframe(sc, data=table, x=W // 8, y=100):
 
 class Map:
     def __init__(self):
-        self.w = 6
-        self.h = 9
-        self.width_size = 19
-        self.height_size = 10
+        self.w = 1
+        self.h = 25
+        self.width_size = 300
+        self.height_size = 1050
+        self.cur_cell = None
         self.size_w = self.width_size // self.w
         self.size_h = self.height_size // self.h
-        self.cur_cell = None
-
     def draw(self, win):
         # вертикальные линии 
         y_index = H // 3
         for line in range(self.w + 1):
             pg.draw.line(win, (0, 0, 0), (line * self.size_w, 0), (line * self.size_w, self.height_size))
+        
         # горизонтальная линии 
         for line in range(self.h + 1):
-            x = W 
             pg.draw.line(win, (0, 0, 0), (0, line * self.size_h), (self.width_size, line * self.size_h))
-
     
     def check_highlite_cursor(self, win):
         x, y = pg.mouse.get_pos()
+        global index_x, index_y
         index_x, index_y = x // self.size_w, y // self.size_h
         
         if index_x < self.w and index_y < self.h:
@@ -161,7 +162,11 @@ class Map:
                 pg.draw.rect(win, (0, 255, 0), (self.cur_cell[0] * self.size_w,
                                                 self.cur_cell[1] * self.size_h,
                                                 self.size_w, self.size_h), 3)
-
-
+            
+        print(index_x, index_y)
+            
+            
+        #rint(table.iloc[index_x, index_y])
 #index location
-# print(table.iloc[0, 4])
+# table =  #
+# print(change_value(table, table.iloc[4, 0], table.iloc[0, 1], 'money', 5000))

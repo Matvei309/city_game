@@ -1,7 +1,11 @@
+from pandas.core.indexing import check_bool_indexer
 import pygame
 from text import print_text_pygame
-import test
-
+from data import table, change_value
+import data 
+from pygame import mixer
+from data import Map
+import time
 # size_of_screen 	= (1280, 800)
 size_of_screen 	= (1900, 1080)
 # size_of_screen 	= (1000, 700)
@@ -12,11 +16,12 @@ BNT_OUT 		= (255, 0, 0)
 level        	= 1
 W_car = 200
 H_car = 150
-line = test.Map()
-pygame.init()
 
+line = data.Map()
+pygame.init()
 sc          = pygame.display.set_mode((W, H), pygame.FULLSCREEN)
 clock       = pygame.time.Clock()
+line.check_highlite_cursor(sc)
     
 def button(x, y, w, h, txt, txt_size, txt_color, x_sh, y_sh, func, photo=False):
     '''здесь создается нажатие на кнопки и их взаимодеиствия '''
@@ -44,7 +49,7 @@ def button(x, y, w, h, txt, txt_size, txt_color, x_sh, y_sh, func, photo=False):
         
         
         
-def move_for_game():           
+def game_step():           
     bomb    = pygame.image.load('assets/bomb.png')
     bombs   = [[pygame.transform.scale(bomb, (100, 100)), 100, 100]]
     bombs.append([pygame.transform.scale(bomb, (150, 150)), 150, 150])
@@ -68,6 +73,7 @@ def move_for_game():
     forest    = pygame.image.load('assets/forest.png')
     forests   = [[pygame.transform.scale(forest, (100, 100)), 100, 100]]
     forests.append([pygame.transform.scale(forest, (150, 150)), 150, 150])
+    music = mixer.Sound('bomp_music.mp3')
         
         
     index, flag, eco           = 0, 0, 90
@@ -87,19 +93,18 @@ def move_for_game():
     
         
     '''закупка ядерных бомб'''
-    # if button(W - W // 10, H // 8 * 7 - 200, 200, 100, '', 5, (0, 0, 0), 30, 30, Ru, for_bombs):  
-    #     # test.table.loc['Russia'].money[city] -= 500
-    #     Ru()
-        
-        # if test.table.loc['Russia'].bomb[index] is False:
-            # if test.table.loc['Russia'].money[index] >= 500:
-                # eco -= 3
-                # test.table.loc['Russia'].bomb[index] = True
+    if button(W - W // 10, H // 8 * 7 - 200, 200, 100, '', 5, (0, 0, 0), 30, 30, None, for_bombs):  
+        music.play()
+        time.sleep(2)
+        data.table = data.change_value(table, table.iloc[0, line.index_y], 'money', 500)
+        # if data.table.loc['Russia'].bomb[index] is False:
+        #     if data.table.loc['Russia'].money[index] >= 500:
+        #         eco -= 3
+        #         data.table.loc['Russia'].bomb[index] = True
     
-    if button(W - W // 10, H // 8 * 7 - 200, 200, 100, '', 5, (0, 0, 0), 30, 30, None, for_bombs):
-        test.table = test.change_value(test.table, 'Ru', 'Moscow', 'money', 100)
-        
-        
+    # if button(W - W // 10, H // 8 * 7, 200, 100, '', 5, (0, 0, 0), 30, 30, None, for_bombs):
+    # if button(W // 2, H // 2, 200, 100, '', 5, (0, 0, 0), 30, 30, None, for_bombs):
+    #     data.table = data.change_value(data.table, 'Ru', 'Moscow', 'money', 100)
         
         
         # if money[flag] >= 300:
